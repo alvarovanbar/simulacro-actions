@@ -1,0 +1,46 @@
+name: Simulacro
+on:
+  push:
+    branches:
+      - test
+jobs:
+  prova-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repo
+        uses: actions/checkout@v4
+
+      - name: Configurem Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalacio Paquets
+        run: pip install -r requirements.txt
+
+      - name: Execucio comprova desplegaments
+        run: python comprova_desplegaments.py example.com
+
+  prova-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout del repo
+        uses: actions/checkout@v4
+
+      - name: Configurem Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalacio Paquets
+        run: pip install -r requirements.txt
+
+      - name: Execucio comprova desplegaments
+        run: python comprova_desplegaments.py example.com
+
+  resum:
+    needs: [prova-linux, prova-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resum
+        run: echo "Tot correcte"
